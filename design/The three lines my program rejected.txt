@@ -1,0 +1,9 @@
+The three lines my program rejected 
+1. Tugboat, 1 
+got rejected because it fit in the length (2 to five)
+
+2. Dinghy,x
+got rejected because it fit in the length (2 to five)
+
+3.Flagship
+got rejected because it fit in the length (2 to five)
