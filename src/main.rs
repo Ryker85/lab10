@@ -8,6 +8,7 @@ const FLEET_PATH: &str = "data/fleet.txt";
 // TODO (Task 6): add SCORES_PATH ("data/scores.txt").
 // TODO (Task 8): add PRACTICE_PATH ("data/boards/practice.txt").
 const TOP_N: usize = 5;
+const PRACTICE_PATH: &str = "data/boards/practice.txt";
 
 fn main() {
     // TODO (Task 5): replace default_fleet() with data::load_fleet(FLEET_PATH),
@@ -66,12 +67,21 @@ fn play_game(fleet: &[ShipSpec]) {
 
 // An unscored game on the fixed layout in the practice file.
 fn practice_game() {
+    match data::load_board(PRACTICE_PATH) {
+        Some(mut board) => {
+            if let Some(shots) = play_round(&mut board) {
+                println!("Practice board cleared in {} shots.", shots);
+            }
+        }
+        None => println!("Practice board unavailable."),
+    }
+}
+
     // TODO (Task 8): load the board with data::load_board(PRACTICE_PATH). On
     // Some(mut board), play it with play_round and print
     // "Practice board cleared in N shots." when play_round returns Some(N).
     // On None, print "Practice board unavailable."
-    println!("Practice mode is not available yet.");
-}
+
 
 // Fire until every ship is sunk. Returns the number of shots, or None if the
 // player types "quit". PROVIDED.
