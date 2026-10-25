@@ -1,7 +1,7 @@
 // Loading and saving game data.
 use crate::board::Board;
 use std::fs;
-
+use crate::board::{Cell, SIZE, new_board};
 
 pub const MIN_SHIP: usize = 2;
 pub const MAX_SHIP: usize = 5;
@@ -131,10 +131,42 @@ pub fn load_fleet(path: &str) -> Vec<ShipSpec> {
 // starting with '#' are ignored. Return None for too few rows, too many rows,
 // a row of the wrong width, or any other character.
 // Start from board::new_board() and fill in board[row][col].
-pub fn parse_board(_text: &str) -> Option<Board> {
-    todo!("Task 3: parse_board")
-}
+pub fn parse_board(text: &str) -> Option<Board> {
+    let mut board = new_board();
+    let mut row = 0;
 
+    for line in text.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') {
+            continue;
+        }
+
+        if row >= SIZE {
+            return None; // too many rows
+        }
+
+        let chars: Vec<char> = trimmed.chars().collect();
+        if chars.len() != SIZE {
+            return None; // row is not 10 characters wide
+        }
+
+        for col in 0..SIZE {
+            match chars[col] {
+                '.' => board[row][col] = Cell::Water,
+                'S' => board[row][col] = Cell::Ship,
+                _ => return None, // invalid character
+            }
+        }
+
+        row += 1;
+    }
+
+    if row != SIZE {
+        return None; // too few rows
+    }
+
+    Some(board)
+}
 // Task 4.
 // Read the file at path and parse it with parse_board. On a read error, or if
 // parse_board returns None, print a message to stderr and return None.
