@@ -73,3 +73,27 @@ fn parse_score_valid() {
 // 2. parse_ship_line returns None when the length is not a number ("Dinghy,x").
 // 3. parse_board returns None when there are only nine rows. Write the nine
 //    rows as a string literal like GOOD_BOARD, with one row removed.
+#[test]
+fn parse_ship_line_rejects_length_six() {
+    assert!(parse_ship_line("Titan,6").is_none());
+}
+
+#[test]
+fn parse_ship_line_rejects_non_number_length() {
+    assert!(parse_ship_line("Dinghy,x").is_none());
+}
+
+#[test]
+fn parse_board_rejects_nine_rows() {
+    // The practice board with the last row removed: 9 rows, not 10.
+    const NINE_ROWS: &str = "SSSSS.....\n\
+..........\n\
+.S........\n\
+.S....SSSS\n\
+.S........\n\
+......S...\n\
+......S...\n\
+..........\n\
+...SS.....\n";
+    assert!(parse_board(NINE_ROWS).is_none());
+}
